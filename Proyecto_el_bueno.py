@@ -1,3 +1,5 @@
+import time
+
 formed_graph = [
     [0,90,100,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],#cancun
     [0,0,90,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],#valladolid
@@ -103,6 +105,10 @@ def generate_states(graph, availabele_nodes_names):
 
     return (nodes_tuples, node_connection_wieghts)
 
+def check_validity_for_bfs(graph):
+    weights = graph[1]
+
+    
 def bfs(graph, start, goal):
     if start == goal:
         return [start]
@@ -200,7 +206,7 @@ def validate_int() -> int:
     return limit
 
 def main():
-    tree = generate_states(formed_graph, names)[0]
+    tree = generate_states(formed_graph, names)
     start = validate_in("Ingrese la ciudad de entrada: ")
     goal = validate_in("Ingrese la ciudad meta: ")
     limit = validate_int()
