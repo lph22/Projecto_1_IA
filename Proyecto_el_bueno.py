@@ -107,7 +107,6 @@ def generate_states(graph, availabele_nodes_names):
 
 def check_validity_for_bfs(graph):
     weights = graph[1]
-
     
 def bfs(graph, start, goal):
     if start == goal:
