@@ -199,3 +199,13 @@ def validate_int() -> int:
             print("Ingrese un número")
     return limit
 
+def main():
+    tree = generate_states(formed_graph, names)[0]
+    start = validate_in("Ingrese la ciudad de entrada: ")
+    goal = validate_in("Ingrese la ciudad meta: ")
+    limit = validate_int()
+    dfs_with_limit(tree, start, goal, limit)
+    iterative_deepening(tree, start, goal)
+
+if __name__ == "__main__":
+    main()
