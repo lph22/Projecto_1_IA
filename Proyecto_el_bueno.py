@@ -106,7 +106,7 @@ def generate_states(graph, availabele_nodes_names):
     return (nodes_tuples, node_connection_wieghts)
 
 def check_validity_for_bfs(graph):
-    """Checa que todos los nodos """
+    """Checa que todas las conneciones tengan el mismo peso, para que sea valido aplicar el algoritmo de busqueda por anchura"""
     weights = graph[1]
     if weights == []:
         return False
