@@ -106,7 +106,19 @@ def generate_states(graph, availabele_nodes_names):
     return (nodes_tuples, node_connection_wieghts)
 
 def check_validity_for_bfs(graph):
+    """Checa que todos los nodos """
     weights = graph[1]
+    if weights == []:
+        return False
+    # Como nos interesa tomar el primer peso posible, lo que vamos a considerar es que los pesos son de la forma
+    # weights = [('A', [('B', 1), ...]), ...] asi que necesitamos tomar el elemento 0 de la lista, despues tomar el elemento 1 de la tupla
+    # osea, la lista de connecciones con sus pesos, depues, la primera conección y por ultimo tomar el primer peso que esta en la pos 1
+    first_weight = weights[0][1][0][1]
+    for node_connections in weights:
+        for node_weight in node_connections[1]:
+            if node_weight[1] != first_weight:
+                return False
+    return True
     
 def bfs(graph, start, goal):
     if start == goal:
