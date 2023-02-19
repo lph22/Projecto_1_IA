@@ -221,6 +221,11 @@ def main():
     start = validate_in("Ingrese la ciudad de entrada: ")
     goal = validate_in("Ingrese la ciudad meta: ")
     limit = validate_int()
+    
+    if check_validity_for_bfs(tree):
+        bfs(tree[0])
+    else:
+        print("No es posible aplicar la busqueda por anchura porque no todos los pesos son iguales")
     dfs_with_limit(tree, start, goal, limit)
     iterative_deepening(tree, start, goal)
 
