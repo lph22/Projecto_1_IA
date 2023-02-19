@@ -128,22 +128,17 @@ def bfs(graph, start, goal):
     while paths != []:
         path = paths.pop(0)
         current_node = path[-1]
-        
         if current_node in visited:
             continue
-
         visited.append(current_node)
         children = [edge[1] for edge in graph if edge[0] == current_node]
-        
         for child in children:
             if child == goal:
                 path.append(child)
                 return path
-
             extended_path = path.copy()
             extended_path.append(child)
-            paths.append(extended_path)
-            
+            paths.append(extended_path)        
     return f"No hay camino entre el nodo: {start} y el nodo: {goal}"
 
 def dfs(graph, start, goal):
@@ -218,19 +213,16 @@ def dijkstra(tree,start_node,goal):
 
     while unvisited_nodes:
         print('--- search iteration ---')
-
         current_min_node = None
         for node in unvisited_nodes: # Iterate over the nodes
             if current_min_node == None:
                 current_min_node = node
             elif shortest_path[node] < shortest_path[current_min_node]:
                 current_min_node = node
-        
         print('\ncurrent_min_node ', current_min_node)
         
         # The code block below retrieves the current node's neighbors and updates their distances
         neighbors = [node_weights_list[1] for node_weights_list in tree[1] if node_weights_list[0] == current_min_node]
-
         print('\nneighbors ', neighbors)
 
         if len(neighbors) != 0:
@@ -256,18 +248,31 @@ def dijkstra(tree,start_node,goal):
 def print_result(start, goal, parsed_tree):
     path = []
     node = goal
-    
     while node != start:
         path.append(node)
         node = parsed_tree[0][node]
- 
     # Add the start node manually
     path.append(start)
     path.reverse()
-
     print('\nThe path from {} to {} is {} with a cost of {}\n'.format(start,goal,path,parsed_tree[1][goal]))
     
-    
+def get_cost(tree, path) -> int:
+    """Lo que hace esta función es calcular el costo de un camino dado el árbol, para poder comparar los resultados entre los distintos algoritmos"""
+    cost = 0
+    node = path.pop(0)
+    while path:
+        for weights in tree[1]:
+            if weights[0] != node:
+                continue
+            for connections in weights[1]:
+                if connections[0] != path[0]:
+                    continue
+                cost += connections[1]
+                break
+            break
+        node = path.pop(0)
+    return cost
+        
 def validate_in(command) -> str:
     """Es una función que se asegura que el nombre ingresado este dentro de los nombres de las ciudades"""
     while True:
@@ -294,7 +299,6 @@ def main():
     start = validate_in("Ingrese la ciudad de entrada: ")
     goal = validate_in("Ingrese la ciudad meta: ")
     limit = validate_int()
-    
     if check_validity_for_bfs(tree):
         bfs(tree[0])
     else:
