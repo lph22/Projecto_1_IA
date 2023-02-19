@@ -195,6 +195,79 @@ def iterative_deepening(graph, start, goal):
             break
     print(path)
 
+def dijkstra(tree,start_node,goal):
+    
+    unvisited_nodes = []
+    for node_tuple in tree[0]:
+        if node_tuple[0] not in unvisited_nodes:
+            unvisited_nodes.append(node_tuple[0])
+        if node_tuple[1] not in unvisited_nodes:
+            unvisited_nodes.append(node_tuple[1])
+
+    shortest_path = {}
+    previous_nodes = {}
+    
+    max_value = 1000000000000
+    
+    for node in unvisited_nodes:
+        shortest_path[node] = max_value
+    # However, we initialize the starting node's value with 0   
+    shortest_path[start_node] = 0
+
+    print('unvisited_nodes ', unvisited_nodes)
+
+    while unvisited_nodes:
+        print('--- search iteration ---')
+
+        current_min_node = None
+        for node in unvisited_nodes: # Iterate over the nodes
+            if current_min_node == None:
+                current_min_node = node
+            elif shortest_path[node] < shortest_path[current_min_node]:
+                current_min_node = node
+        
+        print('\ncurrent_min_node ', current_min_node)
+        
+        # The code block below retrieves the current node's neighbors and updates their distances
+        neighbors = [node_weights_list[1] for node_weights_list in tree[1] if node_weights_list[0] == current_min_node]
+
+        print('\nneighbors ', neighbors)
+
+        if len(neighbors) != 0:
+            for neighbor in neighbors[0]:
+
+                print('\nneighbor being processed ', neighbor)
+
+                tentative_value = shortest_path[current_min_node] + neighbor[1]
+
+                if tentative_value < shortest_path[neighbor[0]]:
+                    shortest_path[neighbor[0]] = tentative_value
+                    # We also update the best path to the current node
+                    previous_nodes[neighbor[0]] = current_min_node
+
+            # After visiting its neighbors, we mark the node as "visited"
+            unvisited_nodes.remove(current_min_node)
+        else:
+            # After visiting its neighbors, we mark the node as "visited"
+            unvisited_nodes.remove(current_min_node)
+        
+    return (previous_nodes, shortest_path)
+
+def print_result(start, goal, parsed_tree):
+    path = []
+    node = goal
+    
+    while node != start:
+        path.append(node)
+        node = parsed_tree[0][node]
+ 
+    # Add the start node manually
+    path.append(start)
+    path.reverse()
+
+    print('\nThe path from {} to {} is {} with a cost of {}\n'.format(start,goal,path,parsed_tree[1][goal]))
+    
+    
 def validate_in(command) -> str:
     """Es una función que se asegura que el nombre ingresado este dentro de los nombres de las ciudades"""
     while True:
@@ -228,6 +301,7 @@ def main():
         print("No es posible aplicar la busqueda por anchura porque no todos los pesos son iguales")
     dfs_with_limit(tree, start, goal, limit)
     iterative_deepening(tree, start, goal)
+    print_result(start, goal, dijkstra(tree, start, goal))
 
 if __name__ == "__main__":
     main()
