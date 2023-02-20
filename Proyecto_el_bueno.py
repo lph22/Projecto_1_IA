@@ -187,8 +187,8 @@ def iterative_deepening(graph, start, goal):
     for limit in range(len(formed_graph)):
         path = dfs_with_limit(graph, start, goal, limit, False)
         if path != []:
-            break
-    print(path)
+            return (path, depth)
+    return path
 
 def dijkstra(tree,start_node,goal):
     unvisited_nodes = []
@@ -295,6 +295,7 @@ def print_result(start, goal, parsed_tree):
     path.append(start)
     path.reverse()
     print('\nThe path from {} to {} is {} with a cost of {}\n'.format(start,goal,path,parsed_tree[1][goal]))
+    return path
     
 def get_cost(tree, path) -> int:
     """Lo que hace esta función es calcular el costo de un camino dado el árbol, para poder comparar los resultados entre los distintos algoritmos"""
@@ -345,22 +346,34 @@ def validate_int() -> int:
             print("Ingrese un número")
     return limit
 
+class Path:
+    def __init__(self, path, time):
+        self.path = path
+        self.time = time
+    
+    def __lt__(self, other):
+        return self.time < other.time
+
 def main():
     tree = generate_states(formed_graph, names)
     start = validate_in("Ingrese la ciudad de entrada: ")
     goal = validate_in("Ingrese la ciudad meta: ")
     limit = validate_int()
-    
+    Paths = []
     if check_validity_for_bfs(tree):
-        bfs_path, bfs_time = measure_time(bfs, tree[0], start, goal)
+        bfs_path = Path(measure_time(bfs, tree[0], start, goal))
     else:
         print("No es posible aplicar la busqueda por anchura porque no todos los pesos son iguales")
-        
-    dfs_with_limit path, dfs_with_limit_time = measure_time(dfs_with_limit, tree[0], start, goal, limit)
-    iterative_deepening_path, iterative_deepening_time = measure_time(iterative_deepening, tree[0], start, goal)
-    dijkstra_path, dijkstra_time = measure_time(dijkstra, tree, start, goal)
-    bidirectional_path, bidirectional_time = measure_time(bidirectional, tree[0], start, goal)
-    print_result(start, goal, dijkstra_path)
+    
+    dfs_with_limit_path = Path(measure_time(dfs_with_limit, tree[0], start, goal, limit))
+    Paths.append(dfs_with_limit_path)
+    iterative_deepening_path = Path(measure_time(iterative_deepening, tree[0], start, goal))
+    Paths.append(iterative_deepening_path)
+    bidirectional_path = Path(measure_time(bidirectional, tree[0], start, goal))
+    Paths.append(bidirectional_path)
+    dijkstra_path, dijstra_time= measure_time(dijkstra, tree, start, goal))
+    printing_time = measure_time(print_result, start, goal, dijkstra_path)
+    
 
 if __name__ == "__main__":
     main()
