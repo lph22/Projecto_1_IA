@@ -1,4 +1,4 @@
-import time
+from time import time
 
 formed_graph = [
     [0,90,100,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],#cancun
@@ -244,7 +244,7 @@ def dijkstra(tree,start_node,goal):
             unvisited_nodes.remove(current_min_node)
     return (previous_nodes, shortest_path)
 
-def biderectional_search(graph, start, goal):
+def bidirectional(graph, start, goal):
     """Estamos considerando que graph se refiere a la lista de adyacencias entre los nodos"""
     starting_paths = [[start]]
     ending_paths =[[goal]]
@@ -314,7 +314,16 @@ def get_cost(tree, path) -> int:
             break
         node = path.pop(0)
     return cost
-        
+
+def measure_time(f, *args):
+    """Lo que importa de aqui es el hecho que **kwargs guarda el los inputs de la función f,
+     lo cual es muy util en caso de que los algoritmos de busqueda que se miden tengan distinto numero de algoritmos
+     ademas, el tiempo que saca esta en ms"""
+    start_time = time()
+    val = f(*args)
+    end_time = time()
+    return (val, end_time - start_time)*(10 ** 3)
+
 def validate_in(command) -> str:
     """Es una función que se asegura que el nombre ingresado este dentro de los nombres de las ciudades"""
     while True:
@@ -341,13 +350,17 @@ def main():
     start = validate_in("Ingrese la ciudad de entrada: ")
     goal = validate_in("Ingrese la ciudad meta: ")
     limit = validate_int()
+    
     if check_validity_for_bfs(tree):
-        bfs(tree[0])
+        bfs_path, bfs_time = measure_time(bfs, tree[0], start, goal)
     else:
         print("No es posible aplicar la busqueda por anchura porque no todos los pesos son iguales")
-    dfs_with_limit(tree, start, goal, limit)
-    iterative_deepening(tree, start, goal)
-    print_result(start, goal, dijkstra(tree, start, goal))
+        
+    dfs_with_limit path, dfs_with_limit_time = measure_time(dfs_with_limit, tree[0], start, goal, limit)
+    iterative_deepening_path, iterative_deepening_time = measure_time(iterative_deepening, tree[0], start, goal)
+    dijkstra_path, dijkstra_time = measure_time(dijkstra, tree, start, goal)
+    bidirectional_path, bidirectional_time = measure_time(bidirectional, tree[0], start, goal)
+    print_result(start, goal, dijkstra_path)
 
 if __name__ == "__main__":
     main()
