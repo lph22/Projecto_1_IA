@@ -242,8 +242,50 @@ def dijkstra(tree,start_node,goal):
         else:
             # After visiting its neighbors, we mark the node as "visited"
             unvisited_nodes.remove(current_min_node)
-        
     return (previous_nodes, shortest_path)
+
+def biderectional_search(graph, start, goal):
+    """Estamos considerando que graph se refiere a la lista de adyacencias entre los nodos"""
+    starting_paths = [[start]]
+    ending_paths =[[goal]]
+    starting_visited = []
+    ending_visited = []
+    while starting_paths != [] and ending_paths != []:
+        start_path = starting_paths.pop(0)
+        current_node = start_path[-1]
+        if current_node in starting_visited:
+            continue
+        starting_visited.append(current_node)
+
+        children = [edge[1] for edge in graph if edge[0] == current_node]
+        for child in children:
+            # Necesitamos checar que si encontramos un nodo hijo de un camino si este nodo
+            # es un nodo padre de algun camino al nodo meta
+            for end_path in ending_paths:
+                if end_path[0] == child:
+                    # Esto quiere decir que encontramos un camino que va al final desde child
+                    # entonces el camino seria (start_path + end_path)
+                    return (start_path + end_path)
+            path = start_path.copy()
+            path.append(child)
+            starting_paths.append(path)
+        
+        end_path = ending_paths.pop(0)
+        current_node = end_path[0]
+        if current_node in ending_visited:
+            continue
+        ending_visited.append(current_node)
+        parents = [edge[0] for edge in graph if edge[1] == current_node]
+        for parent in parents:
+            for start_path in starting_paths:
+                if start_path[-1] == parent:
+                    # Esto quiere decir que encontramos un camino que va desde start hasta parent
+                    # entonces el camino seria (start_path + end_path)
+                    return (start_path + end_path)
+            path = end_path.copy()
+            path.insert(0, parent)
+            ending_paths.append(path)
+    print(f"No se encontraron caminos desde {start} hasta {goal}") 
 
 def print_result(start, goal, parsed_tree):
     path = []
