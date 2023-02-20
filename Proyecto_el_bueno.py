@@ -320,7 +320,9 @@ def measure_time(f, *args):
     start_time = time()
     val = f(*args)
     end_time = time()
-    return (val, end_time - start_time)*(10 ** 3)
+    if val is not None:
+        return (val, (end_time - start_time)*(10 ** 3))
+    return (end_time - start_time)*(10 ** 3)
 
 def validate_in(command) -> str:
     """Es una función que se asegura que el nombre ingresado este dentro de los nombres de las ciudades"""
