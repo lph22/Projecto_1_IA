@@ -362,17 +362,23 @@ def main():
     Paths = []
     if check_validity_for_bfs(tree):
         bfs_path = Path(measure_time(bfs, tree[0], start, goal))
+        Paths.append(bfs_path)
     else:
         print("No es posible aplicar la busqueda por anchura porque no todos los pesos son iguales")
     
     dfs_with_limit_path = Path(measure_time(dfs_with_limit, tree[0], start, goal, limit))
     Paths.append(dfs_with_limit_path)
+    
     iterative_deepening_path = Path(measure_time(iterative_deepening, tree[0], start, goal))
     Paths.append(iterative_deepening_path)
+    
     bidirectional_path = Path(measure_time(bidirectional, tree[0], start, goal))
     Paths.append(bidirectional_path)
-    dijkstra_path, dijstra_time= measure_time(dijkstra, tree, start, goal))
-    printing_time = measure_time(print_result, start, goal, dijkstra_path)
+    
+    temp_path, dijkstra_time = measure_time(dijkstra, tree, start, goal))
+    temp_path, printing_time = measure_time(print_result, start, goal, temp_path)
+    dijkstra_path = Path(temp_path, printing_time+dijkstra_time)
+    Paths.append(dijkstra_path)
     
 
 if __name__ == "__main__":
