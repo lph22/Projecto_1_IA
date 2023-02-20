@@ -191,7 +191,6 @@ def iterative_deepening(graph, start, goal):
     print(path)
 
 def dijkstra(tree,start_node,goal):
-    
     unvisited_nodes = []
     for node_tuple in tree[0]:
         if node_tuple[0] not in unvisited_nodes:
@@ -208,7 +207,6 @@ def dijkstra(tree,start_node,goal):
         shortest_path[node] = max_value
     # However, we initialize the starting node's value with 0   
     shortest_path[start_node] = 0
-
     print('unvisited_nodes ', unvisited_nodes)
 
     while unvisited_nodes:
