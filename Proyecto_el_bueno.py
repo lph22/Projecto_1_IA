@@ -469,6 +469,9 @@ def main():
     else:
         print("No es posible aplicar la busqueda por anchura porque no todos los pesos son iguales")
     
+    dfs_path = Path("de profundiad", *measure_time(dfs, tree[0], start, goal), tree)
+    Paths.append(dfs_path)
+    
     dfs_with_limit_path = Path("de profundidad limitada",*measure_time(dfs_with_limit, tree[0], start, goal, limit), tree)
     Paths.append(dfs_with_limit_path)
     
