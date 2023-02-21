@@ -430,7 +430,13 @@ def validate_int() -> int:
 class Path:
     def __init__(self, alg:str, path:list, time:float, tree):
         self.alg = alg
-        self.path = path
+        if type(path) != tuple:
+            self.path = path
+            self.depth = None
+        else:
+            self.path = path[0]
+            self.depth = path[1]
+        
         self.time = time
         self.cost = get_cost(tree, path)
     
@@ -438,8 +444,12 @@ class Path:
         return self.time <= other.time
 
     def __repr__(self) -> str:
-        return f"""El algoritmo de busqueda {self.alg}: \tCosto: {self.cost} \tTiempo de ejecución: {self.time}
+        if self.depth is None:
+            return f"""El algoritmo de busqueda {self.alg}: \tCosto: {self.cost} \tTiempo de ejecución: {self.time}
         Camino: {self.path}\n"""
+
+        return f"""El algoritmo de busqueda {self.alg}: \tCosto: {self.cost} \tTiempo de ejecución: {self.time}
+        Camino: {self.path} \tProfundidad: {self.depth}\n"""
 
 def main():
     Uniform = uniform_or_not_uniform()
