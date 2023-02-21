@@ -377,7 +377,6 @@ def get_cost(tree, Path) -> int:
     else:
         path = Path.copy()
 
-
     if path == []:
         return cost
 
@@ -395,12 +394,12 @@ def get_cost(tree, Path) -> int:
         node = path.pop(0)
     return cost
 
-def measure_time(f, *args, **kwargs):
+def measure_time(f, *args):
     """Lo que importa de aqui es el hecho que **kwargs guarda el los inputs de la función f,
      lo cual es muy util en caso de que los algoritmos de busqueda que se miden tengan distinto numero de algoritmos
      ademas, el tiempo que saca esta en ms"""
     start_time = time()
-    val = f(*args, **kwargs)
+    val = f(*args)
     end_time = time()
     if val is not None:
         return (val, (end_time - start_time)*(10 ** 3))
@@ -430,6 +429,7 @@ def validate_int() -> int:
 class Path:
     def __init__(self, alg:str, path:list, time:float, tree):
         self.alg = alg
+
         if type(path) != tuple:
             self.path = path
             self.depth = None
@@ -450,6 +450,7 @@ class Path:
 
         return f"""El algoritmo de busqueda {self.alg}: \tCosto: {self.cost} \tTiempo de ejecución: {self.time}
         Camino: {self.path} \tProfundidad: {self.depth}\n"""
+
 
 def main():
     Uniform = uniform_or_not_uniform()
