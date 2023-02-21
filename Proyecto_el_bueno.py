@@ -445,11 +445,20 @@ class Path:
 
     def __repr__(self) -> str:
         if self.depth is None:
+            if self.path == []:
+                return f"""El algoritmo de busqueda {self.alg}: \tCosto: {self.cost} \tTiempo de ejecución: {self.time}
+            Camino: ¡Error! No se encontro camino.\n"""
+            else:
+                return f"""El algoritmo de busqueda {self.alg}: \tCosto: {self.cost} \tTiempo de ejecución: {self.time}
+            Camino: {self.path}\n"""
+            
+        if self.path == []:
             return f"""El algoritmo de busqueda {self.alg}: \tCosto: {self.cost} \tTiempo de ejecución: {self.time}
-        Camino: {self.path}\n"""
-
-        return f"""El algoritmo de busqueda {self.alg}: \tCosto: {self.cost} \tTiempo de ejecución: {self.time}
+        Camino: ¡Error! No se encontro camino. \tProfundidad: {self.depth}\n"""
+        else:
+            return f"""El algoritmo de busqueda {self.alg}: \tCosto: {self.cost} \tTiempo de ejecución: {self.time}
         Camino: {self.path} \tProfundidad: {self.depth}\n"""
+
 
 
 def main():
