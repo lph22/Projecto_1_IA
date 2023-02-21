@@ -314,12 +314,12 @@ def get_cost(tree, path) -> int:
         node = path.pop(0)
     return cost
 
-def measure_time(f, *args):
+def measure_time(f, *args, **kwargs):
     """Lo que importa de aqui es el hecho que **kwargs guarda el los inputs de la función f,
      lo cual es muy util en caso de que los algoritmos de busqueda que se miden tengan distinto numero de algoritmos
      ademas, el tiempo que saca esta en ms"""
     start_time = time()
-    val = f(*args)
+    val = f(*args, **kwargs)
     end_time = time()
     if val is not None:
         return (val, (end_time - start_time)*(10 ** 3))
