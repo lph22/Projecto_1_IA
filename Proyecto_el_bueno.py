@@ -196,20 +196,6 @@ def generate_states(graph, available_nodes_names):
 
     return (nodes_tuples, node_connection_weights)
 
-def check_validity_for_bfs(graph):
-    """Checa que todas las conneciones tengan el mismo peso, para que sea valido aplicar el algoritmo de busqueda por anchura"""
-    weights = graph[1]
-    if weights == []:
-        return False
-    # Como nos interesa tomar el primer peso posible, lo que vamos a considerar es que los pesos son de la forma
-    # weights = [('A', [('B', 1), ...]), ...] asi que necesitamos tomar el elemento 0 de la lista, despues tomar el elemento 1 de la tupla
-    # osea, la lista de connecciones con sus pesos, depues, la primera conección y por ultimo tomar el primer peso que esta en la pos 1
-    first_weight = weights[0][1][0][1]
-    for node_connections in weights:
-        for node_weight in node_connections[1]:
-            if node_weight[1] != first_weight:
-                return False
-    return True
     
 def bfs(graph, start, goal):
     if start == goal:
@@ -278,7 +264,7 @@ def iterative_deepening(graph, start, goal):
     for limit in range(len(formed_graph)):
         path = dfs_with_limit(graph, start, goal, limit, False)
         if path != []:
-            return (path, limit)
+            return path
     return path
 
 def dijkstra(tree,start_node,goal):
@@ -381,9 +367,20 @@ def print_result(start, goal, parsed_tree):
     path.reverse()
     return path
     
-def get_cost(tree, path) -> int:
-    """Lo que hace esta función es calcular el costo de un camino dado el árbol, para poder comparar los resultados entre los distintos algoritmos"""
+def get_cost(tree, Path) -> int:
+    """Lo que hace esta función es calcular el costo de un camino dado el árbol, 
+    para poder comparar los resultados entre los distintos algoritmos"""
+    
     cost = 0
+    if type(Path) == tuple:
+        path = Path[0].copy()
+    else:
+        path = Path.copy()
+
+
+    if path == []:
+        return cost
+
     node = path.pop(0)
     while path:
         for weights in tree[1]:
@@ -442,12 +439,12 @@ class Path:
 
     def __repr__(self) -> str:
         return f"""El algoritmo de busqueda {self.alg}: \tCosto: {self.cost} \tTiempo de ejecución: {self.time}
-        \nCamino: {self.path}"""
+        Camino: {self.path}\n"""
 
 def main():
     Uniform = uniform_or_not_uniform()
     if Uniform:
-        tree = generate_state(formed_graph_u, names)
+        tree = generate_states(formed_graph_u, names)
     else:
         tree = generate_states(formed_graph, names)
     start = validate_in("Ingrese la ciudad de entrada: ")
@@ -474,6 +471,10 @@ def main():
     temp_path, printing_time = measure_time(print_result, start, goal, temp_path)
     dijkstra_path = Path("de Dijkstra", temp_path, printing_time+dijkstra_time, tree)
     Paths.append(dijkstra_path)
+
+    print("Los resultados de todos los algoritmos de búsqueda son: ")
+    for path in Paths:
+        print(path)
     
 
 if __name__ == "__main__":
