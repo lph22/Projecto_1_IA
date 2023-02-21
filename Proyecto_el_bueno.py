@@ -475,7 +475,8 @@ def main():
     print("Los resultados de todos los algoritmos de búsqueda son: ")
     for path in Paths:
         print(path)
-    
+
+    print(f"El algoritmo con el menor tiempo de ejecución fue de busqueda {min(Paths).alg}")
 
 if __name__ == "__main__":
     main()
