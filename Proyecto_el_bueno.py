@@ -456,9 +456,11 @@ def main():
     Uniform = uniform_or_not_uniform()
     if Uniform:
         tree = generate_states(formed_graph_u, names)
+        print('\ntree = ', tree, '\n')
     else:
         tree = generate_states(formed_graph, names)
-    start = validate_in("Ingrese la ciudad de entrada: ")
+        print('\ntree = ', tree, '\n')
+    start = validate_in("\nIngrese la ciudad de entrada: ")
     goal = validate_in("Ingrese la ciudad meta: ")
     limit = validate_int()
     Paths = []
