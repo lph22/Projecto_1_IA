@@ -88,9 +88,9 @@ names = [
     'Piedras Negras','Reynosa','Soto la Marina','Monclova','Ojinaga','Tlaxcala'
 ]
 
-def generate_states(graph, availabele_nodes_names):
+def generate_states(graph, available_nodes_names):
     nodes_tuples =[]
-    node_connection_wieghts = []
+    node_connection_weights = []
     for matrix_row_index in range(len(graph)):
         connections_and_weights = []
 
@@ -98,12 +98,12 @@ def generate_states(graph, availabele_nodes_names):
             
             if graph[matrix_row_index][matrix_column_index] != 0:
                 nodes_tuples.append((availabele_nodes_names[matrix_row_index], availabele_nodes_names[matrix_column_index]))
-                connections_and_weights.append(( availabele_nodes_names[matrix_column_index], graph[matrix_row_index][matrix_column_index]))
+                connections_and_weights.append(( available_nodes_names[matrix_column_index], graph[matrix_row_index][matrix_column_index]))
         
         if len(connections_and_weights) != 0:
-            node_connection_wieghts.append((availabele_nodes_names[matrix_row_index], connections_and_weights))
+            node_connection_weights.append((available_nodes_names[matrix_row_index], connections_and_weights))
 
-    return (nodes_tuples, node_connection_wieghts)
+    return (nodes_tuples, node_connection_weights)
 
 def check_validity_for_bfs(graph):
     """Checa que todas las conneciones tengan el mismo peso, para que sea valido aplicar el algoritmo de busqueda por anchura"""
