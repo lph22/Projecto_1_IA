@@ -97,7 +97,7 @@ def generate_states(graph, available_nodes_names):
         for matrix_column_index in range(len(graph[0])):
             
             if graph[matrix_row_index][matrix_column_index] != 0:
-                nodes_tuples.append((availabele_nodes_names[matrix_row_index], availabele_nodes_names[matrix_column_index]))
+                nodes_tuples.append((available_nodes_names[matrix_row_index], available_nodes_names[matrix_column_index]))
                 connections_and_weights.append(( available_nodes_names[matrix_column_index], graph[matrix_row_index][matrix_column_index]))
         
         if len(connections_and_weights) != 0:
@@ -187,7 +187,7 @@ def iterative_deepening(graph, start, goal):
     for limit in range(len(formed_graph)):
         path = dfs_with_limit(graph, start, goal, limit, False)
         if path != []:
-            return (path, depth)
+            return (path, limit)
     return path
 
 def dijkstra(tree,start_node,goal):
@@ -207,26 +207,20 @@ def dijkstra(tree,start_node,goal):
         shortest_path[node] = max_value
     # However, we initialize the starting node's value with 0   
     shortest_path[start_node] = 0
-    print('unvisited_nodes ', unvisited_nodes)
 
     while unvisited_nodes:
-        print('--- search iteration ---')
         current_min_node = None
         for node in unvisited_nodes: # Iterate over the nodes
             if current_min_node == None:
                 current_min_node = node
             elif shortest_path[node] < shortest_path[current_min_node]:
                 current_min_node = node
-        print('\ncurrent_min_node ', current_min_node)
         
         # The code block below retrieves the current node's neighbors and updates their distances
         neighbors = [node_weights_list[1] for node_weights_list in tree[1] if node_weights_list[0] == current_min_node]
-        print('\nneighbors ', neighbors)
 
         if len(neighbors) != 0:
             for neighbor in neighbors[0]:
-
-                print('\nneighbor being processed ', neighbor)
 
                 tentative_value = shortest_path[current_min_node] + neighbor[1]
 
@@ -294,7 +288,6 @@ def print_result(start, goal, parsed_tree):
     # Add the start node manually
     path.append(start)
     path.reverse()
-    print('\nThe path from {} to {} is {} with a cost of {}\n'.format(start,goal,path,parsed_tree[1][goal]))
     return path
     
 def get_cost(tree, path) -> int:
